@@ -1,0 +1,1379 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <title>Biblioteca Digital Escolar - 15 Cuentos</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <style>
+    :root{
+      --fondo:#0b0c10;
+      --texto:#f1f1f1;
+      --accent:#ffd166;
+      --btn1:#3498db;
+      --btn2:#2b7fb0;
+      --card-bg: rgba(255,255,255,0.06);
+      --max-width:980px;
+    }
+    html,body{height:100%; margin:0; padding:0; background:var(--fondo) url('https://www.transparenttextures.com/patterns/stardust.png'); color:var(--texto); font-family: Georgia, serif;}
+    header{padding:18px; text-align:center;}
+    h1{color:var(--accent); margin:6px 0;}
+    .logo{width:80px; display:block; margin:0 auto 10px;}
+    .container{max-width:var(--max-width); margin:0 auto; padding:0 14px;}
+    .pantalla{display:none; padding:18px 0;}
+    .activo{display:block;}
+    .btn{margin:8px; padding:10px 18px; font-size:15px; border:none; border-radius:8px; background:linear-gradient(90deg,var(--btn1),var(--btn2)); color:#fff; cursor:pointer;}
+    .btn.small{padding:8px 12px; font-size:13px;}
+    .btn:hover{filter:brightness(1.05);}
+    .card{background:var(--card-bg); border-radius:12px; padding:18px; margin:12px auto; max-width:880px; box-shadow:0 8px 30px rgba(0,0,0,0.55);}
+    .card-header{display:flex; align-items:center; gap:12px; margin-bottom:8px;}
+    .badge{width:46px; height:46px; border-radius:10px; display:flex; align-items:center; justify-content:center; background:linear-gradient(135deg, rgba(255,255,255,0.06), rgba(255,255,255,0.02)); font-size:22px;}
+    .title{font-size:20px; font-weight:600; color:var(--accent);}
+    .personaje-wrap{max-width:820px; margin:6px auto 12px; height:120px; display:flex; align-items:flex-end; justify-content:center;}
+    .personaje{font-size:84px; opacity:0; transform:translateY(20px); transition:opacity .6s ease, transform .6s cubic-bezier(.2,.9,.3,1); filter:drop-shadow(0 8px 18px rgba(0,0,0,0.6));}
+    .personaje.visible{opacity:1; transform:translateY(0);}
+    .cuento{max-width:820px; margin:14px auto; text-align:justify; background:rgba(255,255,255,0.04); padding:18px; border-radius:10px; line-height:1.6;}
+    .pregunta{margin-top:12px; text-align:left; padding:8px; border-radius:8px;}
+    label{cursor:pointer; display:block; padding:8px; border-radius:8px; transition:background .12s ease, transform .12s ease;}
+    label:hover{background:rgba(255,255,255,0.02); transform:translateX(4px);}
+    input[type="radio"]{margin-right:8px;}
+    .resultado{margin-top:12px; font-weight:600; color:var(--accent); text-align:left; max-width:820px; margin-left:auto; margin-right:auto; background:rgba(0,0,0,0.28); padding:12px; border-radius:8px;}
+    .retro-correctas{margin-top:10px; color:var(--accent);}
+    footer{margin:28px 0 40px; text-align:center; color:rgba(241,241,241,0.6); font-size:13px;}
+    @media (max-width:720px){
+      .personaje{font-size:56px;}
+      .badge{width:40px;height:40px;font-size:18px;}
+      .title{font-size:18px;}
+    }
+  </style>
+</head>
+<body>
+  <header id="cabecera" class="container">
+    <img src="logotipo15deseptiembre.jpeg" alt="Logotipo Escuela Primaria 15 de Septiembre" class="logo">
+    <h1>Biblioteca Digital Escolar</h1>
+    <p style="margin:0; color:rgba(241,241,241,0.85)">15 cuentos con quizzes — toca un cuento para leer</p>
+  </header>
+
+  <main class="container">
+    <!-- MENÚ -->
+    <div id="menu" class="pantalla activo">
+      <div class="card">
+        <div class="card-header">
+          <div class="badge">📚</div>
+          <div>
+            <div class="title">Menú de cuentos</div>
+            <div style="color:rgba(241,241,241,0.75); font-size:13px">Selecciona un cuento para leer y contestar su quiz</div>
+          </div>
+        </div>
+
+        <div style="display:flex; flex-wrap:wrap; gap:8px; justify-content:center;">
+          <button class="btn" onclick="mostrar('cuento1')">El Principito</button>
+          <button class="btn" onclick="mostrar('cuento2')">Caperucita Roja</button>
+          <button class="btn" onclick="mostrar('cuento3')">Los Tres Cerditos</button>
+          <button class="btn" onclick="mostrar('cuento4')">Blancanieves</button>
+          <button class="btn" onclick="mostrar('cuento5')">La Bella Durmiente</button>
+
+          <button class="btn" onclick="mostrar('cuento6')">Hansel y Gretel</button>
+          <button class="btn" onclick="mostrar('cuento7')">La Cenicienta</button>
+          <button class="btn" onclick="mostrar('cuento8')">El Patito Feo</button>
+          <button class="btn" onclick="mostrar('cuento9')">Pinocho</button>
+          <button class="btn" onclick="mostrar('cuento10')">La Sirenita</button>
+
+          <button class="btn" onclick="mostrar('cuento11')">El Gato con Botas</button>
+          <button class="btn" onclick="mostrar('cuento12')">Pulgarcito</button>
+          <button class="btn" onclick="mostrar('cuento13')">El Soldadito de Plomo</button>
+          <button class="btn" onclick="mostrar('cuento14')">Rapunzel</button>
+          <button class="btn" onclick="mostrar('cuento15')">El Flautista de Hamelín</button>
+        </div>
+
+        <div style="margin-top:12px; text-align:center;">
+          <button class="btn small" onclick="toggleAnimaciones()">Activar/Desactivar animaciones</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== CUENTOS 1-5 (originales) ===== -->
+    <!-- CUENTO 1 -->
+    <section id="cuento1" class="pantalla">
+      <div class="card" style="border-left:6px solid #7bdff6;">
+        <div class="card-header">
+          <div class="badge">🌟</div>
+          <div><div class="title">El Principito</div><div style="color:rgba(241,241,241,0.75); font-size:13px">Una historia sobre lo esencial</div></div>
+        </div>
+        <div class="personaje-wrap"><div class="personaje" id="p_principito">🧑‍🚀🌹</div></div>
+        <div class="cuento">
+          <p>En un rincón del universo vivía un pequeño príncipe en un asteroide tan diminuto que podía ver el amanecer y el atardecer varias veces al día. Su vida transcurría entre el cuidado de una rosa delicada y la limpieza de tres volcanes. La rosa, orgullosa y frágil, le enseñó al principito sobre el cariño y la responsabilidad.
+
+Movido por la curiosidad, el principito emprendió un viaje que lo llevó a visitar otros planetas. Allí conoció a personajes singulares: un rey que gobernaba sin súbditos, un vanidoso que necesitaba aplausos, un hombre de negocios que contaba estrellas y un farolero que seguía órdenes sin cuestionarlas. Cada encuentro le dejó una lección sobre la naturaleza humana.
+
+Al llegar a la Tierra, el principito se encontró con un aviador perdido en el desierto. Entre conversaciones sencillas y profundas, ambos aprendieron a mirar más allá de lo visible. El principito comprendió que su rosa era única porque él la había cuidado y amado; así entendió que los lazos y las pequeñas acciones cotidianas dan sentido a la vida.</p>
+        </div>
+        <div style="text-align:center; margin-top:8px;">
+          <button class="btn" onclick="mostrar('quiz1')">Contestar Quiz</button>
+          <button class="btn" onclick="mostrar('menu')">Volver al menú</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- QUIZ 1 -->
+    <section id="quiz1" class="pantalla">
+      <div class="card">
+        <h2 class="title">Quiz: El Principito</h2>
+        <form id="formQuiz1">
+          <div class="pregunta"><p>1. ¿Qué cuidaba el principito?</p>
+            <label><input type="radio" name="p1q1" value="correcto"> Una rosa</label>
+            <label><input type="radio" name="p1q1" value="incorrecto"> Un volcán</label>
+            <label><input type="radio" name="p1q1" value="incorrecto"> Un árbol</label>
+          </div>
+          <div class="pregunta"><p>2. ¿Qué limpiaba?</p>
+            <label><input type="radio" name="p1q2" value="correcto"> Sus volcanes</label>
+            <label><input type="radio" name="p1q2" value="incorrecto"> Su casa</label>
+            <label><input type="radio" name="p1q2" value="incorrecto"> Su jardín</label>
+          </div>
+          <div class="pregunta"><p>3. ¿Dónde conoce al aviador?</p>
+            <label><input type="radio" name="p1q3" value="correcto"> En el desierto</label>
+            <label><input type="radio" name="p1q3" value="incorrecto"> En la ciudad</label>
+            <label><input type="radio" name="p1q3" value="incorrecto"> En el mar</label>
+          </div>
+          <div class="pregunta"><p>4. ¿Qué le enseña la rosa?</p>
+            <label><input type="radio" name="p1q4" value="correcto"> Sobre el cariño y la responsabilidad</label>
+            <label><input type="radio" name="p1q4" value="incorrecto"> A volar</label>
+            <label><input type="radio" name="p1q4" value="incorrecto"> A contar</label>
+          </div>
+          <div class="pregunta"><p>5. ¿Qué personaje NO aparece?</p>
+            <label><input type="radio" name="p1q5" value="correcto"> Un dragón</label>
+            <label><input type="radio" name="p1q5" value="incorrecto"> Un rey</label>
+            <label><input type="radio" name="p1q5" value="incorrecto"> Un vanidoso</label>
+          </div>
+          <div class="pregunta"><p>6. ¿Qué valora la historia?</p>
+            <label><input type="radio" name="p1q6" value="correcto"> Lo esencial que se ve con el corazón</label>
+            <label><input type="radio" name="p1q6" value="incorrecto"> La riqueza</label>
+            <label><input type="radio" name="p1q6" value="incorrecto"> La fama</label>
+          </div>
+          <div class="pregunta"><p>7. ¿Qué aprendió sobre los adultos?</p>
+            <label><input type="radio" name="p1q7" value="correcto"> Que a veces no entienden lo esencial</label>
+            <label><input type="radio" name="p1q7" value="incorrecto"> Que siempre tienen la razón</label>
+            <label><input type="radio" name="p1q7" value="incorrecto"> Que son niños</label>
+          </div>
+          <div class="pregunta"><p>8. ¿Qué demuestra responsabilidad?</p>
+            <label><input type="radio" name="p1q8" value="correcto"> Proteger la rosa</label>
+            <label><input type="radio" name="p1q8" value="incorrecto"> Contar estrellas</label>
+            <label><input type="radio" name="p1q8" value="incorrecto"> Pintar su casa</label>
+          </div>
+
+          <div style="text-align:center; margin-top:12px;">
+            <button type="button" class="btn" onclick="calcularPuntaje('formQuiz1','resultado1',8)">Ver puntaje</button>
+            <button type="button" class="btn" onclick="mostrar('menu')">Volver al menú</button>
+          </div>
+        </form>
+        <div id="resultado1" class="resultado"></div>
+      </div>
+    </section>
+
+    <!-- CUENTO 2 -->
+    <section id="cuento2" class="pantalla">
+      <div class="card" style="border-left:6px solid #ff7aa2;">
+        <div class="card-header">
+          <div class="badge">🧺</div>
+          <div><div class="title">Caperucita Roja</div><div style="color:rgba(241,241,241,0.75); font-size:13px">Obedecer y no confiar en extraños</div></div>
+        </div>
+        <div class="personaje-wrap"><div class="personaje" id="p_caperucita">🧒🧺🐺</div></div>
+        <div class="cuento">
+          <p>Caperucita Roja vivía en una aldea junto a un bosque frondoso. Un día su madre le pidió llevar una cesta con pan, miel y una sopa caliente a su abuela enferma. Antes de salir, la madre le advirtió que siguiera el camino y no hablara con desconocidos.
+
+Mientras caminaba, Caperucita se distrajo recogiendo flores y observando mariposas. Un lobo astuto la abordó con palabras amables y, al saber a dónde iba, tomó un atajo para llegar antes a la casa de la abuela. Allí se disfrazó y esperó a la niña.
+
+Al entrar, Caperucita notó cambios en la "abuela" pero no reaccionó a tiempo. Un cazador que pasaba por la zona escuchó ruidos extraños, entró y descubrió al lobo; gracias a su valentía, la abuela y la niña fueron salvadas. Caperucita aprendió la importancia de obedecer y de no confiar en extraños.</p>
+        </div>
+        <div style="text-align:center; margin-top:8px;">
+          <button class="btn" onclick="mostrar('quiz2')">Contestar Quiz</button>
+          <button class="btn" onclick="mostrar('menu')">Volver al menú</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- QUIZ 2 -->
+    <section id="quiz2" class="pantalla">
+      <div class="card">
+        <h2 class="title">Quiz: Caperucita Roja</h2>
+        <form id="formQuiz2">
+          <div class="pregunta"><p>1. ¿Qué llevaba en la cesta?</p>
+            <label><input type="radio" name="p2q1" value="correcto"> Comida para su abuela</label>
+            <label><input type="radio" name="p2q1" value="incorrecto"> Juguetes</label>
+            <label><input type="radio" name="p2q1" value="incorrecto"> Ropa</label>
+          </div>
+          <div class="pregunta"><p>2. ¿Qué le dijo su madre?</p>
+            <label><input type="radio" name="p2q2" value="correcto"> No hablar con desconocidos</label>
+            <label><input type="radio" name="p2q2" value="incorrecto"> Correr por el bosque</label>
+            <label><input type="radio" name="p2q2" value="incorrecto"> Dormir</label>
+          </div>
+          <div class="pregunta"><p>3. ¿Quién la engaña?</p>
+            <label><input type="radio" name="p2q3" value="correcto"> El lobo</label>
+            <label><input type="radio" name="p2q3" value="incorrecto"> Un mago</label>
+            <label><input type="radio" name="p2q3" value="incorrecto"> Un cazador</label>
+          </div>
+          <div class="pregunta"><p>4. ¿Cómo llega el lobo antes?</p>
+            <label><input type="radio" name="p2q4" value="correcto"> Tomando un atajo</label>
+            <label><input type="radio" name="p2q4" value="incorrecto"> Volando</label>
+            <label><input type="radio" name="p2q4" value="incorrecto"> Nadando</label>
+          </div>
+          <div class="pregunta"><p>5. ¿Quién rescata a la abuela?</p>
+            <label><input type="radio" name="p2q5" value="correcto"> Un cazador</label>
+            <label><input type="radio" name="p2q5" value="incorrecto"> Un vecino</label>
+            <label><input type="radio" name="p2q5" value="incorrecto"> Un príncipe</label>
+          </div>
+          <div class="pregunta"><p>6. ¿Qué aprende Caperucita?</p>
+            <label><input type="radio" name="p2q6" value="correcto"> A no confiar en desconocidos</label>
+            <label><input type="radio" name="p2q6" value="incorrecto"> A perderse</label>
+            <label><input type="radio" name="p2q6" value="incorrecto"> A cazar</label>
+          </div>
+          <div class="pregunta"><p>7. ¿Dónde vive la abuela?</p>
+            <label><input type="radio" name="p2q7" value="correcto"> Al otro lado del bosque</label>
+            <label><input type="radio" name="p2q7" value="incorrecto"> En la ciudad</label>
+            <label><input type="radio" name="p2q7" value="incorrecto"> En la escuela</label>
+          </div>
+          <div class="pregunta"><p>8. ¿Qué la distrae?</p>
+            <label><input type="radio" name="p2q8" value="correcto"> Recoger flores</label>
+            <label><input type="radio" name="p2q8" value="incorrecto"> Cantar</label>
+            <label><input type="radio" name="p2q8" value="incorrecto"> Dormir</label>
+          </div>
+
+          <div style="text-align:center; margin-top:12px;">
+            <button type="button" class="btn" onclick="calcularPuntaje('formQuiz2','resultado2',8)">Ver puntaje</button>
+            <button type="button" class="btn" onclick="mostrar('menu')">Volver al menú</button>
+          </div>
+        </form>
+        <div id="resultado2" class="resultado"></div>
+      </div>
+    </section>
+
+    <!-- CUENTO 3 -->
+    <section id="cuento3" class="pantalla">
+      <div class="card" style="border-left:6px solid #ffd166;">
+        <div class="card-header">
+          <div class="badge">🐷</div>
+          <div><div class="title">Los Tres Cerditos</div><div style="color:rgba(241,241,241,0.75); font-size:13px">Esfuerzo y previsión</div></div>
+        </div>
+        <div class="personaje-wrap"><div class="personaje" id="p_cerditos">🐷🐷🐷</div></div>
+        <div class="cuento">
+          <p>Tres cerditos hermanos decidieron construir cada uno su casa. El primero, impaciente, levantó una casa de paja en poco tiempo; el segundo, con menos esfuerzo, construyó una casa de madera; y el tercero, trabajador, dedicó tiempo a construir una casa de ladrillo sólida y bien cimentada.
+
+Cuando apareció el lobo, sopló con fuerza sobre la casa de paja y la derribó; lo mismo ocurrió con la casa de madera. Los dos cerditos corrieron a refugiarse en la casa de ladrillo del tercer hermano. El lobo intentó derribarla, pero no pudo.
+
+Al final, los cerditos aprendieron que la planificación, el esfuerzo y la dedicación ofrecen seguridad. La historia resalta valores como la perseverancia, la responsabilidad y la importancia de pensar a largo plazo.</p>
+        </div>
+        <div style="text-align:center; margin-top:8px;">
+          <button class="btn" onclick="mostrar('quiz3')">Contestar Quiz</button>
+          <button class="btn" onclick="mostrar('menu')">Volver al menú</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- QUIZ 3 -->
+    <section id="quiz3" class="pantalla">
+      <div class="card">
+        <h2 class="title">Quiz: Los Tres Cerditos</h2>
+        <form id="formQuiz3">
+          <div class="pregunta"><p>1. ¿Qué casa resistió?</p>
+            <label><input type="radio" name="p3q1" value="correcto"> Ladrillo</label>
+            <label><input type="radio" name="p3q1" value="incorrecto"> Paja</label>
+            <label><input type="radio" name="p3q1" value="incorrecto"> Madera</label>
+          </div>
+          <div class="pregunta"><p>2. ¿Qué valor enseña?</p>
+            <label><input type="radio" name="p3q2" value="correcto"> Perseverancia</label>
+            <label><input type="radio" name="p3q2" value="incorrecto"> Pereza</label>
+            <label><input type="radio" name="p3q2" value="incorrecto"> Egoísmo</label>
+          </div>
+          <div class="pregunta"><p>3. ¿Qué hizo el primer cerdito?</p>
+            <label><input type="radio" name="p3q3" value="correcto"> Construyó con paja</label>
+            <label><input type="radio" name="p3q3" value="incorrecto"> Construyó con ladrillo</label>
+            <label><input type="radio" name="p3q3" value="incorrecto"> No construyó</label>
+          </div>
+          <div class="pregunta"><p>4. ¿Qué representa el lobo?</p>
+            <label><input type="radio" name="p3q4" value="correcto"> Un peligro que prueba la preparación</label>
+            <label><input type="radio" name="p3q4" value="incorrecto"> Un amigo</label>
+            <label><input type="radio" name="p3q4" value="incorrecto"> Un constructor</label>
+          </div>
+          <div class="pregunta"><p>5. ¿Qué hizo el segundo cerdito?</p>
+            <label><input type="radio" name="p3q5" value="correcto"> Construyó con madera</label>
+            <label><input type="radio" name="p3q5" value="incorrecto"> Construyó con ladrillo</label>
+            <label><input type="radio" name="p3q5" value="incorrecto"> Construyó con paja</label>
+          </div>
+          <div class="pregunta"><p>6. ¿Qué hizo el tercer cerdito?</p>
+            <label><input type="radio" name="p3q6" value="correcto"> Construyó con ladrillo</label>
+            <label><input type="radio" name="p3q6" value="incorrecto"> Construyó con paja</label>
+            <label><input type="radio" name="p3q6" value="incorrecto"> No construyó</label>
+          </div>
+          <div class="pregunta"><p>7. ¿Qué aprendieron?</p>
+            <label><input type="radio" name="p3q7" value="correcto"> Que el trabajo bien hecho da seguridad</label>
+            <label><input type="radio" name="p3q7" value="incorrecto"> Que la rapidez es mejor</label>
+            <label><input type="radio" name="p3q7" value="incorrecto"> Que no hay que ayudar</label>
+          </div>
+          <div class="pregunta"><p>8. ¿Qué no es cierto?</p>
+            <label><input type="radio" name="p3q8" value="correcto"> Que la casa de paja resistió</label>
+            <label><input type="radio" name="p3q8" value="incorrecto"> Que la casa de ladrillo resistió</label>
+            <label><input type="radio" name="p3q8" value="incorrecto"> Que el lobo sopló</label>
+          </div>
+
+          <div style="text-align:center; margin-top:12px;">
+            <button type="button" class="btn" onclick="calcularPuntaje('formQuiz3','resultado3',8)">Ver puntaje</button>
+            <button type="button" class="btn" onclick="mostrar('menu')">Volver al menú</button>
+          </div>
+        </form>
+        <div id="resultado3" class="resultado"></div>
+      </div>
+    </section>
+
+    <!-- CUENTO 4 -->
+    <section id="cuento4" class="pantalla">
+      <div class="card" style="border-left:6px solid #b39cff;">
+        <div class="card-header">
+          <div class="badge">🍎</div>
+          <div><div class="title">Blancanieves</div><div style="color:rgba(241,241,241,0.75); font-size:13px">Envidia, amistad y solidaridad</div></div>
+        </div>
+        <div class="personaje-wrap"><div class="personaje" id="p_blancanieves">👸🍎</div></div>
+        <div class="cuento">
+          <p>Blancanieves era una princesa de belleza notable: piel blanca, cabello oscuro y labios rojos. Tras la muerte de su madre, su padre se casó con una mujer vanidosa que, al descubrir que Blancanieves era más bella, sintió celos profundos. La madrastra ordenó que la niña fuera llevada al bosque, pero el cazador que debía hacerlo la dejó libre por compasión.
+             Blancanieves encontró refugio en una casita habitada por siete enanitos que trabajaban en la mina. Con ellos compartió tareas, risas y cuidados. La madrastra, al enterarse de que seguía viva, intentó acabar con ella mediante engaños: peines envenenados, cordones apretados y finalmente manzana envenenada. una
+             Un príncipe, al pasar por la región, encontró a Blancanieves en estado de aparente sueño y, con un gesto de bondad, rompió el hechizo en las versiones clásicas. Blancanieves recuperó su lugar en el reino y la historia subraya la solidaridad, la amistad y la superación de la envidia.</p>
+        </div>
+        <div style="text-align:center; margin-top:8px;">
+          <button class="btn" onclick="mostrar('quiz4')">Contestar Quiz</button>
+          <button class="btn" onclick="mostrar('menu')">Volver al menú</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- QUIZ 4 -->
+    <section id="quiz4" class="pantalla">
+      <div class="card">
+        <h2 class="title">Quiz: Blancanieves</h2>
+        <form id="formQuiz4">
+          <div class="pregunta"><p>1. ¿Quién la protegió?</p>
+            <label><input type="radio" name="p4q1" value="correcto"> Los siete enanitos</label>
+            <label><input type="radio" name="p4q1" value="incorrecto"> Un dragón</label>
+            <label><input type="radio" name="p4q1" value="incorrecto"> Un mago</label>
+          </div>
+          <div class="pregunta"><p>2. ¿Qué sentía la madrastra?</p>
+            <label><input type="radio" name="p4q2" value="correcto"> Envidia</label>
+            <label><input type="radio" name="p4q2" value="incorrecto"> Alegría</label>
+            <label><input type="radio" name="p4q2" value="incorrecto"> Indiferencia</label>
+          </div>
+          <div class="pregunta"><p>3. ¿Qué usó la madrastra?</p>
+            <label><input type="radio" name="p4q3" value="correcto"> Una manzana envenenada</label>
+            <label><input type="radio" name="p4q3" value="incorrecto"> Un hechizo de amor</label>
+            <label><input type="radio" name="p4q3" value="incorrecto"> Un collar mágico</label>
+          </div>
+          <div class="pregunta"><p>4. ¿Quién rompe el hechizo?</p>
+            <label><input type="radio" name="p4q4" value="correcto"> Un príncipe</label>
+            <label><input type="radio" name="p4q4" value="incorrecto"> Un enano</label>
+            <label><input type="radio" name="p4q4" value="incorrecto"> La madrastra</label>
+          </div>
+          <div class="pregunta"><p>5. ¿Dónde trabajaban los enanitos?</p>
+            <label><input type="radio" name="p4q5" value="correcto"> En una mina</label>
+            <label><input type="radio" name="p4q5" value="incorrecto"> En el castillo</label>
+            <label><input type="radio" name="p4q5" value="incorrecto"> En la escuela</label>
+          </div>
+          <div class="pregunta"><p>6. ¿Qué valor destaca?</p>
+            <label><input type="radio" name="p4q6" value="correcto"> Solidaridad</label>
+            <label><input type="radio" name="p4q6" value="incorrecto"> Envidia</label>
+            <label><input type="radio" name="p4q6" value="incorrecto"> Soledad</label>
+          </div>
+          <div class="pregunta"><p>7. ¿Por qué el cazador no la mató?</p>
+            <label><input type="radio" name="p4q7" value="correcto"> Porque tuvo compasión</label>
+            <label><input type="radio" name="p4q7" value="incorrecto"> Porque no pudo encontrarla</label>
+            <label><input type="radio" name="p4q7" value="incorrecto"> Porque la madrastra lo detuvo</label>
+          </div>
+          <div class="pregunta"><p>8. ¿Qué simboliza la manzana?</p>
+            <label><input type="radio" name="p4q8" value="correcto"> Un peligro disfrazado de regalo</label>
+            <label><input type="radio" name="p4q8" value="incorrecto"> Un premio</label>
+            <label><input type="radio" name="p4q8" value="incorrecto"> Un juguete</label>
+          </div>
+
+          <div style="text-align:center; margin-top:12px;">
+            <button type="button" class="btn" onclick="calcularPuntaje('formQuiz4','resultado4',8)">Ver puntaje</button>
+            <button type="button" class="btn" onclick="mostrar('menu')">Volver al menú</button>
+          </div>
+        </form>
+        <div id="resultado4" class="resultado"></div>
+      </div>
+    </section>
+
+    <!-- CUENTO 5 -->
+    <section id="cuento5" class="pantalla">
+      <div class="card" style="border-left:6px solid #9be89b;">
+        <div class="card-header">
+          <div class="badge">⏳</div>
+          <div><div class="title">La Bella Durmiente</div><div style="color:rgba(241,241,241,0.75); font-size:13px">Paciencia y esperanza</div></div>
+        </div>
+        <div class="personaje-wrap"><div class="personaje" id="p_bella">👸🕰️</div></div>
+        <div class="cuento">
+          <p>En un reino lejano nació una princesa que fue bendecida por hadas, pero una hada ofendida lanzó una maldición: al cumplir cierta edad, la princesa se pincharía con una rueca y caería en un sueño profundo. Los reyes intentaron protegerla retirando las ruecas del castillo, pero la maldición se cumplió.
+
+La princesa cayó en un sueño que se extendió por todo el reino; los años pasaron y el castillo quedó cubierto de silencio y enredaderas. En la versión clásica, un príncipe valiente atraviesa los obstáculos, llega al castillo y, con un acto de amor o valentía, despierta a la princesa y al reino entero.</p>
+        </div>
+        <div style="text-align:center; margin-top:8px;">
+          <button class="btn" onclick="mostrar('quiz5')">Contestar Quiz</button>
+          <button class="btn" onclick="mostrar('menu')">Volver al menú</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- QUIZ 5 -->
+    <section id="quiz5" class="pantalla">
+      <div class="card">
+        <h2 class="title">Quiz: La Bella Durmiente</h2>
+        <form id="formQuiz5">
+          <div class="pregunta"><p>1. ¿Qué le ocurre a la princesa?</p>
+            <label><input type="radio" name="p5q1" value="correcto"> Cae en un sueño por una maldición</label>
+            <label><input type="radio" name="p5q1" value="incorrecto"> Se convierte en reina</label>
+            <label><input type="radio" name="p5q1" value="incorrecto"> Se va de viaje</label>
+          </div>
+          <div class="pregunta"><p>2. ¿Qué provoca la maldición?</p>
+            <label><input type="radio" name="p5q2" value="correcto"> Una rueca</label>
+            <label><input type="radio" name="p5q2" value="incorrecto"> Una manzana</label>
+            <label><input type="radio" name="p5q2" value="incorrecto"> Un espejo</label>
+          </div>
+          <div class="pregunta"><p>3. ¿Qué sucede con el reino?</p>
+            <label><input type="radio" name="p5q3" value="correcto"> Queda en silencio y cubierto de enredaderas</label>
+            <label><input type="radio" name="p5q3" value="incorrecto"> Se vuelve próspero</label>
+            <label><input type="radio" name="p5q3" value="incorrecto"> Se convierte en isla</label>
+          </div>
+          <div class="pregunta"><p>4. ¿Quién rompe la maldición?</p>
+            <label><input type="radio" name="p5q4" value="correcto"> Un príncipe</label>
+            <label><input type="radio" name="p5q4" value="incorrecto"> La reina</label>
+            <label><input type="radio" name="p5q4" value="incorrecto"> Un mago</label>
+          </div>
+          <div class="pregunta"><p>5. ¿Qué valores aparecen?</p>
+            <label><input type="radio" name="p5q5" value="correcto"> Paciencia y esperanza</label>
+            <label><input type="radio" name="p5q5" value="incorrecto"> Egoísmo</label>
+            <label><input type="radio" name="p5q5" value="incorrecto"> Desidia</label>
+          </div>
+          <div class="pregunta"><p>6. ¿Qué simboliza el despertar?</p>
+            <label><input type="radio" name="p5q6" value="correcto"> Restauración y esperanza</label>
+            <label><input type="radio" name="p5q6" value="incorrecto"> Olvido</label>
+            <label><input type="radio" name="p5q6" value="incorrecto"> Derrota</label>
+          </div>
+          <div class="pregunta"><p>7. ¿Qué papel tiene la comunidad?</p>
+            <label><input type="radio" name="p5q7" value="correcto"> Puede unirse para superar la adversidad</label>
+            <label><input type="radio" name="p5q7" value="incorrecto"> Se separa</label>
+            <label><input type="radio" name="p5q7" value="incorrecto"> Ignora el problema</label>
+          </div>
+          <div class="pregunta"><p>8. ¿Qué obstáculo aparece antes del despertar?</p>
+            <label><input type="radio" name="p5q8" value="correcto"> Enredaderas y silencio en el castillo</label>
+            <label><input type="radio" name="p5q8" value="incorrecto"> Un río</label>
+            <label><input type="radio" name="p5q8" value="incorrecto"> Una montaña</label>
+          </div>
+
+          <div style="text-align:center; margin-top:12px;">
+            <button type="button" class="btn" onclick="calcularPuntaje('formQuiz5','resultado5',8)">Ver puntaje</button>
+            <button type="button" class="btn" onclick="mostrar('menu')">Volver al menú</button>
+          </div>
+        </form>
+        <div id="resultado5" class="resultado"></div>
+      </div>
+    </section>
+
+    <!-- ===== CUENTOS 6-15 (nuevos) ===== -->
+    <!-- CUENTO 6: Hansel y Gretel -->
+    <section id="cuento6" class="pantalla">
+      <div class="card" style="border-left:6px solid #f6b26b;">
+        <div class="card-header">
+          <div class="badge">🍬</div>
+          <div><div class="title">Hansel y Gretel</div><div style="color:rgba(241,241,241,0.75); font-size:13px">Abandonados en el bosque y la casa de dulces</div></div>
+        </div>
+        <div class="personaje-wrap"><div class="personaje" id="p_hansel">👦👧🍬</div></div>
+        <div class="cuento">
+          <p>En un pequeño pueblo vivían dos hermanos llamados Hansel y Gretel. Sus padres, pobres y preocupados por la falta de alimento, tomaron la difícil decisión de llevarlos al bosque con la esperanza de que pudieran sobrevivir por sí mismos. Los niños, aunque asustados, se apoyaban mutuamente y buscaban la manera de regresar a casa. Hansel, ingenioso, dejó caer migajas de pan para marcar el camino, pero los pájaros del bosque las devoraron y pronto se encontraron perdidos.  
+
+Tras caminar durante horas, descubrieron una casa sorprendente: sus paredes estaban hechas de pan, el techo cubierto de pastel y las ventanas adornadas con caramelos. Fascinados por tanta dulzura, comenzaron a probar los dulces sin saber que aquella casa pertenecía a una bruja. La anciana, astuta y malvada, los invitó a entrar con voz amable, pero pronto reveló sus verdaderas intenciones: quería engordar a Hansel para comérselo y obligó a Gretel a trabajar como sirvienta.  
+
+Los días pasaban y la bruja revisaba constantemente si Hansel estaba listo para su festín. Sin embargo, el muchacho, con gran ingenio, le mostraba un hueso en lugar de su dedo para hacerle creer que seguía demasiado delgado. Gretel, aunque temerosa, mantenía la esperanza de escapar. Finalmente, cuando la bruja encendió el horno para cocinar a Hansel, Gretel reunió toda su valentía y empujó a la bruja dentro, cerrando la puerta de hierro. La bruja quedó atrapada y los niños lograron liberarse de su amenaza.</p>
+        </div>
+        <div style="text-align:center; margin-top:8px;">
+          <button class="btn" onclick="mostrar('quiz6')">Contestar Quiz</button>
+          <button class="btn" onclick="mostrar('menu')">Volver al menú</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- QUIZ 6 -->
+    <section id="quiz6" class="pantalla">
+      <div class="card">
+        <h2 class="title">Quiz: Hansel y Gretel</h2>
+        <form id="formQuiz6">
+          <div class="pregunta"><p>1. ¿Qué encontraron en el bosque?</p>
+            <label><input type="radio" name="p6q1" value="correcto"> Una casa de dulces</label>
+            <label><input type="radio" name="p6q1" value="incorrecto"> Un castillo</label>
+            <label><input type="radio" name="p6q1" value="incorrecto"> Un lago</label>
+          </div>
+          <div class="pregunta"><p>2. ¿Quién vivía en la casa?</p>
+            <label><input type="radio" name="p6q2" value="correcto"> Una bruja</label>
+            <label><input type="radio" name="p6q2" value="incorrecto"> Un príncipe</label>
+            <label><input type="radio" name="p6q2" value="incorrecto"> Un mago</label>
+          </div>
+          <div class="pregunta"><p>3. ¿Cómo escaparon?</p>
+            <label><input type="radio" name="p6q3" value="correcto"> Con astucia y valentía</label>
+            <label><input type="radio" name="p6q3" value="incorrecto"> Con magia</label>
+            <label><input type="radio" name="p6q3" value="incorrecto"> Con ayuda de un dragón</label>
+          </div>
+          <div class="pregunta"><p>4. ¿Qué aprendieron?</p>
+            <label><input type="radio" name="p6q4" value="correcto"> A cuidarse y ser valientes</label>
+            <label><input type="radio" name="p6q4" value="incorrecto"> A confiar en extraños</label>
+            <label><input type="radio" name="p6q4" value="incorrecto"> A perderse</label>
+          </div>
+          <div class="pregunta"><p>5. ¿Quién los abandonó?</p>
+            <label><input type="radio" name="p6q5" value="correcto"> Sus padres (en la versión clásica por necesidad)</label>
+            <label><input type="radio" name="p6q5" value="incorrecto"> Un vecino</label>
+            <label><input type="radio" name="p6q5" value="incorrecto"> Un rey</label>
+          </div>
+          <div class="pregunta"><p>6. ¿Qué había en la casa?</p>
+            <label><input type="radio" name="p6q6" value="correcto"> Dulces y golosinas</label>
+            <label><input type="radio" name="p6q6" value="incorrecto"> Herramientas</label>
+            <label><input type="radio" name="p6q6" value="incorrecto"> Libros</label>
+          </div>
+          <div class="pregunta"><p>7. ¿Cómo se llaman los niños?</p>
+            <label><input type="radio" name="p6q7" value="correcto"> Hansel y Gretel</label>
+            <label><input type="radio" name="p6q7" value="incorrecto"> Pedro y María</label>
+            <label><input type="radio" name="p6q7" value="incorrecto"> Juan y Ana</label>
+          </div>
+          <div class="pregunta"><p>8. ¿Qué valor destaca?</p>
+            <label><input type="radio" name="p6q8" value="correcto"> Ingenio y valentía</label>
+            <label><input type="radio" name="p6q8" value="incorrecto"> Pereza</label>
+            <label><input type="radio" name="p6q8" value="incorrecto"> Egoísmo</label>
+          </div>
+
+          <div style="text-align:center; margin-top:12px;">
+            <button type="button" class="btn" onclick="calcularPuntaje('formQuiz6','resultado6',8)">Ver puntaje</button>
+            <button type="button" class="btn" onclick="mostrar('menu')">Volver al menú</button>
+          </div>
+        </form>
+        <div id="resultado6" class="resultado"></div>
+      </div>
+    </section>
+
+    <!-- CUENTO 7: La Cenicienta -->
+    <section id="cuento7" class="pantalla">
+      <div class="card" style="border-left:6px solid #9fc5e8;">
+        <div class="card-header">
+          <div class="badge">👠</div>
+          <div><div class="title">La Cenicienta</div><div style="color:rgba(241,241,241,0.75); font-size:13px">De la ceniza al baile real</div></div>
+        </div>
+        <div class="personaje-wrap"><div class="personaje" id="p_cenicienta">👸🥿✨</div></div>
+        <div class="cuento">
+          <p>En un reino lejano vivía una joven llamada Cenicienta. Tras la muerte de su padre, quedó bajo el cuidado de su madrastra y sus dos hermanastras, quienes la trataban con desprecio y la obligaban a realizar todas las tareas del hogar. Cenicienta, a pesar del maltrato, mantenía siempre una actitud bondadosa y esperanzada, encontrando consuelo en los pequeños momentos de paz.  
+
+Un día, el rey anunció un gran baile en el palacio para que su hijo, el príncipe, pudiera elegir esposa. Las hermanastras se prepararon con vestidos lujosos y risas burlonas, mientras que a Cenicienta se le prohibió asistir. Triste y sola, la joven lloró en silencio, hasta que apareció su hada madrina. Con un toque de magia, transformó su ropa en un hermoso vestido, le dio unos delicados zapatos de cristal y convirtió una calabaza en un carruaje. Antes de partir, le advirtió que la magia terminaría a medianoche.  
+
+En el baile, Cenicienta deslumbró a todos con su gracia y bondad. El príncipe quedó cautivado y bailó con ella toda la noche. Sin embargo, al sonar las campanadas de medianoche, Cenicienta huyó apresurada, dejando atrás una de sus zapatillas de cristal. El príncipe, decidido a encontrarla, recorrió el reino con la zapatilla en mano, probándola en cada joven.  
+
+La madrastra y las hermanastras intentaron impedir que Cenicienta fuera descubierta, pero la verdad salió a la luz. Cuando la zapatilla encajó perfectamente en su pie, el príncipe supo que ella era la joven que había conquistado su corazón. Cenicienta, que había soportado humillaciones y trabajo duro, encontró en ese momento la recompensa a su esperanza y bondad.  
+
+El príncipe la llevó al palacio y pronto se casaron, iniciando una nueva vida llena de amor y respeto. La historia de Cenicienta se convirtió en un símbolo de que la bondad y la esperanza pueden vencer la injusticia y abrir el camino hacia un destino mejor.</p>
+        </div>
+        <div style="text-align:center; margin-top:8px;">
+          <button class="btn" onclick="mostrar('quiz7')">Contestar Quiz</button>
+          <button class="btn" onclick="mostrar('menu')">Volver al menú</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- QUIZ 7 -->
+    <section id="quiz7" class="pantalla">
+      <div class="card">
+        <h2 class="title">Quiz: La Cenicienta</h2>
+        <form id="formQuiz7">
+          <div class="pregunta"><p>1. ¿Quién ayuda a Cenicienta a ir al baile?</p>
+            <label><input type="radio" name="p7q1" value="correcto"> Un hada madrina</label>
+            <label><input type="radio" name="p7q1" value="incorrecto"> Su madrastra</label>
+            <label><input type="radio" name="p7q1" value="incorrecto"> Un príncipe</label>
+          </div>
+          <div class="pregunta"><p>2. ¿Qué pierde en el baile?</p>
+            <label><input type="radio" name="p7q2" value="correcto"> Una zapatilla</label>
+            <label><input type="radio" name="p7q2" value="incorrecto"> Un collar</label>
+            <label><input type="radio" name="p7q2" value="incorrecto"> Un sombrero</label>
+          </div>
+          <div class="pregunta"><p>3. ¿Quién la encuentra al final?</p>
+            <label><input type="radio" name="p7q3" value="correcto"> El príncipe</label>
+            <label><input type="radio" name="p7q3" value="incorrecto"> La madrastra</label>
+            <label><input type="radio" name="p7q3" value="incorrecto"> Un vecino</label>
+          </div>
+          <div class="pregunta"><p>4. ¿Qué simboliza la zapatilla?</p>
+            <label><input type="radio" name="p7q4" value="correcto"> La identidad y el destino</label>
+            <label><input type="radio" name="p7q4" value="incorrecto"> La riqueza</label>
+            <label><input type="radio" name="p7q4" value="incorrecto"> La magia</label>
+          </div>
+          <div class="pregunta"><p>5. ¿Cómo vivía Cenicienta?</p>
+            <label><input type="radio" name="p7q5" value="correcto"> Maltratada por su madrastra</label>
+            <label><input type="radio" name="p7q5" value="incorrecto"> Como princesa</label>
+            <label><input type="radio" name="p7q5" value="incorrecto"> En el bosque</label>
+          </div>
+          <div class="pregunta"><p>6. ¿Qué valor aparece?</p>
+            <label><input type="radio" name="p7q6" value="correcto"> Esperanza y bondad</label>
+            <label><input type="radio" name="p7q6" value="incorrecto"> Venganza</label>
+            <label><input type="radio" name="p7q6" value="incorrecto"> Egoísmo</label>
+          </div>
+          <div class="pregunta"><p>7. ¿Quién intenta impedir que la encuentren?</p>
+            <label><input type="radio" name="p7q7" value="correcto"> La madrastra y hermanastras</label>
+            <label><input type="radio" name="p7q7" value="incorrecto"> El príncipe</label>
+            <label><input type="radio" name="p7q7" value="incorrecto"> El hada</label>
+          </div>
+          <div class="pregunta"><p>8. ¿Cómo termina la historia?</p>
+            <label><input type="radio" name="p7q8" value="correcto"> Cenicienta se casa con el príncipe</label>
+            <label><input type="radio" name="p7q8" value="incorrecto"> Se va del reino</label>
+            <label><input type="radio" name="p7q8" value="incorrecto"> Se convierte en bruja</label>
+          </div>
+
+          <div style="text-align:center; margin-top:12px;">
+            <button type="button" class="btn" onclick="calcularPuntaje('formQuiz7','resultado7',8)">Ver puntaje</button>
+            <button type="button" class="btn" onclick="mostrar('menu')">Volver al menú</button>
+          </div>
+        </form>
+        <div id="resultado7" class="resultado"></div>
+      </div>
+    </section>
+
+    <!-- CUENTO 8: El Patito Feo -->
+    <section id="cuento8" class="pantalla">
+      <div class="card" style="border-left:6px solid #cfe2f3;">
+        <div class="card-header">
+          <div class="badge">🦆</div>
+          <div><div class="title">El Patito Feo</div><div style="color:rgba(241,241,241,0.75); font-size:13px">De la burla a la transformación</div></div>
+        </div>
+        <div class="personaje-wrap"><div class="personaje" id="p_patito">🦆😢🌸</div></div>
+        <div class="cuento">
+          <p>En una tranquila granja, una madre pata esperaba con ilusión el nacimiento de sus pequeños. Uno a uno, los huevos fueron rompiéndose y salieron patitos amarillos y alegres. Sin embargo, el último huevo tardó más en abrirse y, cuando lo hizo, apareció un patito distinto: más grande, de plumas grises y aspecto desgarbado. Desde el primer momento, las demás aves comenzaron a burlarse de él por ser diferente.  
+
+El patito feo sufría rechazo y tristeza. Aunque su madre lo defendía, los demás animales lo apartaban y lo ridiculizaban. Incapaz de soportar tanta burla, decidió alejarse de la granja y buscar un lugar donde pudiera sentirse aceptado. Vagó por lagos y campos, enfrentando el frío del invierno y la soledad, siempre con la esperanza de encontrar un sitio donde encajara.  
+
+Durante su viaje conoció a otros animales, pero ninguno lo recibió con cariño. Pasó hambre, frío y miedo, pero también aprendió a ser paciente y a resistir las dificultades. El tiempo transcurrió y, con la llegada de la primavera, el patito se acercó a un lago cristalino. Allí vio reflejada su imagen en el agua y descubrió que ya no era el patito gris y torpe que todos despreciaban: se había transformado en un hermoso cisne de plumas blancas y elegantes.  
+
+Al poco tiempo, otros cisnes se acercaron y lo recibieron con alegría. Por primera vez, el patito feo sintió aceptación y orgullo de sí mismo. Comprendió que su diferencia era en realidad su mayor fortaleza y que la paciencia lo había llevado a descubrir su verdadera identidad.  
+
+Desde entonces, vivió feliz entre los cisnes, recordando que la apariencia no define el valor de un ser, sino su esencia y la capacidad de esperar el momento adecuado para brillar.</p>
+        </div>
+        <div style="text-align:center; margin-top:8px;">
+          <button class="btn" onclick="mostrar('quiz8')">Contestar Quiz</button>
+          <button class="btn" onclick="mostrar('menu')">Volver al menú</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- QUIZ 8 -->
+    <section id="quiz8" class="pantalla">
+      <div class="card">
+        <h2 class="title">Quiz: El Patito Feo</h2>
+        <form id="formQuiz8">
+          <div class="pregunta"><p>1. ¿Por qué lo rechazaban?</p>
+            <label><input type="radio" name="p8q1" value="correcto"> Porque era diferente</label>
+            <label><input type="radio" name="p8q1" value="incorrecto"> Porque era rico</label>
+            <label><input type="radio" name="p8q1" value="incorrecto"> Porque era famoso</label>
+          </div>
+          <div class="pregunta"><p>2. ¿En qué se convierte?</p>
+            <label><input type="radio" name="p8q2" value="correcto"> En un cisne</label>
+            <label><input type="radio" name="p8q2" value="incorrecto"> En un pato gigante</label>
+            <label><input type="radio" name="p8q2" value="incorrecto"> En un perro</label>
+          </div>
+          <div class="pregunta"><p>3. ¿Qué valor destaca?</p>
+            <label><input type="radio" name="p8q3" value="correcto"> Aceptación y paciencia</label>
+            <label><input type="radio" name="p8q3" value="incorrecto"> Venganza</label>
+            <label><input type="radio" name="p8q3" value="incorrecto"> Egoísmo</label>
+          </div>
+          <div class="pregunta"><p>4. ¿Cómo cambia su vida?</p>
+            <label><input type="radio" name="p8q4" value="correcto"> Encuentra aceptación</label>
+            <label><input type="radio" name="p8q4" value="incorrecto"> Se vuelve solitario</label>
+            <label><input type="radio" name="p8q4" value="incorrecto"> Se va del lago</label>
+          </div>
+          <div class="pregunta"><p>5. ¿Quién lo cuidó al principio?</p>
+            <label><input type="radio" name="p8q5" value="correcto"> Su madre pata</label>
+            <label><input type="radio" name="p8q5" value="incorrecto"> Un príncipe</label>
+            <label><input type="radio" name="p8q5" value="incorrecto"> Un granjero</label>
+          </div>
+          <div class="pregunta"><p>6. ¿Qué le pasó al final?</p>
+            <label><input type="radio" name="p8q6" value="correcto"> Fue reconocido como cisne</label>
+            <label><input type="radio" name="p8q6" value="incorrecto"> Fue expulsado</label>
+            <label><input type="radio" name="p8q6" value="incorrecto"> Se convirtió en rey</label>
+          </div>
+          <div class="pregunta"><p>7. ¿Qué sentimiento sufrió?</p>
+            <label><input type="radio" name="p8q7" value="correcto"> Tristeza por el rechazo</label>
+            <label><input type="radio" name="p8q7" value="incorrecto"> Alegría</label>
+            <label><input type="radio" name="p8q7" value="incorrecto"> Indiferencia</label>
+          </div>
+          <div class="pregunta"><p>8. ¿Qué enseñanza deja?</p>
+            <label><input type="radio" name="p8q8" value="correcto"> Que la apariencia no define el valor</label>
+            <label><input type="radio" name="p8q8" value="incorrecto"> Que la fama es todo</label>
+            <label><input type="radio" name="p8q8" value="incorrecto"> Que hay que huir</label>
+          </div>
+
+          <div style="text-align:center; margin-top:12px;">
+            <button type="button" class="btn" onclick="calcularPuntaje('formQuiz8','resultado8',8)">Ver puntaje</button>
+            <button type="button" class="btn" onclick="mostrar('menu')">Volver al menú</button>
+          </div>
+        </form>
+        <div id="resultado8" class="resultado"></div>
+      </div>
+    </section>
+
+    <!-- CUENTO 9: Pinocho -->
+    <section id="cuento9" class="pantalla">
+      <div class="card" style="border-left:6px solid #f9cb9c;">
+        <div class="card-header">
+          <div class="badge">🪵</div>
+          <div><div class="title">Pinocho</div><div style="color:rgba(241,241,241,0.75); font-size:13px">La marioneta que quiere ser niño</div></div>
+        </div>
+        <div class="personaje-wrap"><div class="personaje" id="p_pinocho">🤥🪵🧒</div></div>
+        <div class="cuento">
+          <p>En un pequeño taller vivía Geppetto, un humilde carpintero que soñaba con tener un hijo. Una noche, con gran dedicación, talló una marioneta de madera a la que llamó Pinocho. Para su sorpresa, aquella figura cobró vida gracias a la magia del Hada Azul. Aunque seguía siendo de madera, Pinocho podía hablar, moverse y reír como un niño verdadero.  
+
+El hada le prometió que algún día podría convertirse en un niño de carne y hueso, pero solo si demostraba ser honesto, valiente y generoso. Sin embargo, Pinocho era curioso y travieso, y pronto se metió en problemas. Cada vez que mentía, su nariz se alargaba, recordándole que las mentiras tienen consecuencias.  
+
+Durante sus aventuras, Pinocho conoció personajes que lo pusieron a prueba: el astuto zorro y el gato que intentaban engañarlo, el titiritero que lo quería usar para ganar dinero, y otros que lo alejaban de su camino. A pesar de sus errores, siempre llevaba en el corazón el deseo de regresar con su padre y demostrar que podía ser mejor.  
+
+El Hada Azul y su conciencia, representada por el pequeño grillo, lo guiaban en los momentos más difíciles, enseñándole que la honestidad y la responsabilidad eran la clave para alcanzar sus sueños. Tras superar grandes pruebas, como rescatar a Geppetto del vientre de una ballena y enfrentar sus propios miedos, Pinocho aprendió el valor de decir la verdad y cuidar de quienes lo amaban.  
+
+Finalmente, al demostrar su bondad y valentía, el Hada Azul cumplió su promesa: Pinocho se transformó en un niño de verdad. Geppetto, emocionado, abrazó a su hijo con lágrimas de alegría. Desde entonces, Pinocho vivió como un niño humano, recordando siempre que la honestidad y el amor son los valores que dan sentido a la vida.</p>
+        </div>
+        <div style="text-align:center; margin-top:8px;">
+          <button class="btn" onclick="mostrar('quiz9')">Contestar Quiz</button>
+          <button class="btn" onclick="mostrar('menu')">Volver al menú</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- QUIZ 9 -->
+    <section id="quiz9" class="pantalla">
+      <div class="card">
+        <h2 class="title">Quiz: Pinocho</h2>
+        <form id="formQuiz9">
+          <div class="pregunta"><p>1. ¿Quién creó a Pinocho?</p>
+            <label><input type="radio" name="p9q1" value="correcto"> Geppetto</label>
+            <label><input type="radio" name="p9q1" value="incorrecto"> El hada</label>
+            <label><input type="radio" name="p9q1" value="incorrecto"> Un príncipe</label>
+          </div>
+          <div class="pregunta"><p>2. ¿Qué pasa cuando miente?</p>
+            <label><input type="radio" name="p9q2" value="correcto"> Se le alarga la nariz</label>
+            <label><input type="radio" name="p9q2" value="incorrecto"> Se vuelve invisible</label>
+            <label><input type="radio" name="p9q2" value="incorrecto"> Canta</label>
+          </div>
+          <div class="pregunta"><p>3. ¿Qué desea Pinocho?</p>
+            <label><input type="radio" name="p9q3" value="correcto"> Ser un niño de verdad</label>
+            <label><input type="radio" name="p9q3" value="incorrecto"> Ser rey</label>
+            <label><input type="radio" name="p9q3" value="incorrecto"> Ser un mago</label>
+          </div>
+          <div class="pregunta"><p>4. ¿Qué valor aprende?</p>
+            <label><input type="radio" name="p9q4" value="correcto"> Honestidad</label>
+            <label><input type="radio" name="p9q4" value="incorrecto"> Desobediencia</label>
+            <label><input type="radio" name="p9q4" value="incorrecto"> Egoísmo</label>
+          </div>
+          <div class="pregunta"><p>5. ¿Quién lo guía a veces?</p>
+            <label><input type="radio" name="p9q5" value="correcto"> El Hada Azul</label>
+            <label><input type="radio" name="p9q5" value="incorrecto"> Un dragón</label>
+            <label><input type="radio" name="p9q5" value="incorrecto"> Un príncipe</label>
+          </div>
+          <div class="pregunta"><p>6. ¿Qué representa la nariz?</p>
+            <label><input type="radio" name="p9q6" value="correcto"> Las consecuencias de mentir</label>
+            <label><input type="radio" name="p9q6" value="incorrecto"> La riqueza</label>
+            <label><input type="radio" name="p9q6" value="incorrecto"> La fuerza</label>
+          </div>
+          <div class="pregunta"><p>7. ¿Quién es su creador?</p>
+            <label><input type="radio" name="p9q7" value="correcto"> Geppetto</label>
+            <label><input type="radio" name="p9q7" value="incorrecto"> El hada</label>
+            <label><input type="radio" name="p9q7" value="incorrecto"> Un carpintero desconocido</label>
+          </div>
+          <div class="pregunta"><p>8. ¿Qué final suele tener?</p>
+            <label><input type="radio" name="p9q8" value="correcto"> Se convierte en niño verdadero</label>
+            <label><input type="radio" name="p9q8" value="incorrecto"> Se queda marioneta</label>
+            <label><input type="radio" name="p9q8" value="incorrecto"> Se convierte en árbol</label>
+          </div>
+
+          <div style="text-align:center; margin-top:12px;">
+            <button type="button" class="btn" onclick="calcularPuntaje('formQuiz9','resultado9',8)">Ver puntaje</button>
+            <button type="button" class="btn" onclick="mostrar('menu')">Volver al menú</button>
+          </div>
+        </form>
+        <div id="resultado9" class="resultado"></div>
+      </div>
+    </section>
+
+    <!-- CUENTO 10: La Sirenita -->
+    <section id="cuento10" class="pantalla">
+      <div class="card" style="border-left:6px solid #76c7c0;">
+        <div class="card-header">
+          <div class="badge">🐚</div>
+          <div><div class="title">La Sirenita</div><div style="color:rgba(241,241,241,0.75); font-size:13px">Deseos, sacrificio y mar</div></div>
+        </div>
+        <div class="personaje-wrap"><div class="personaje" id="p_sirenita">🧜‍♀️🌊🐚</div></div>
+        <div class="cuento">
+          <p>En lo más profundo del océano vivía una joven sirenita, hija del rey del mar. Desde pequeña se maravillaba con las historias sobre el mundo humano, soñando con caminar sobre la tierra y descubrir sus secretos. Mientras sus hermanas se conformaban con la vida marina, ella pasaba horas observando barcos y escuchando relatos sobre príncipes y reinos.  
+
+Al cumplir la edad suficiente, la sirenita pudo salir a la superficie. Allí vio a un joven príncipe en un barco y quedó fascinada por su valentía y bondad. Cuando una tormenta hundió la embarcación, ella lo rescató y lo llevó a la orilla, aunque él nunca supo quién le había salvado la vida. Desde ese momento, su deseo de conocer el mundo humano se convirtió en un anhelo profundo.  
+
+Decidida a cumplir su sueño, acudió a la bruja del mar, quien le ofreció un trato: le daría piernas para caminar, pero a cambio debía entregar su voz, su más hermoso don. La sirenita aceptó el sacrificio, sabiendo que sin palabras tendría que demostrar su amor con acciones.  
+
+En tierra, la sirenita vivió nuevas experiencias y desafíos. El príncipe la acogió en su palacio sin saber que ella era su salvadora. Aunque compartieron momentos de alegría, la falta de voz y la presencia de otras pretendientes hicieron que la sirenita sufriera en silencio. Su sacrificio le enseñó que los deseos tienen consecuencias y que el amor verdadero exige paciencia y entrega.  
+
+En algunas versiones, la historia termina con la sirenita convirtiéndose en espuma de mar, símbolo de su sacrificio y pureza. En otras, el príncipe reconoce su valor y la acepta como compañera. En cualquier caso, la enseñanza permanece: antes de actuar movidos por un deseo, debemos pensar en las consecuencias y valorar lo que realmente importa.</p>
+        </div>
+        <div style="text-align:center; margin-top:8px;">
+          <button class="btn" onclick="mostrar('quiz10')">Contestar Quiz</button>
+          <button class="btn" onclick="mostrar('menu')">Volver al menú</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- QUIZ 10 -->
+    <section id="quiz10" class="pantalla">
+      <div class="card">
+        <h2 class="title">Quiz: La Sirenita</h2>
+        <form id="formQuiz10">
+          <div class="pregunta"><p>1. ¿Quién es la protagonista?</p>
+            <label><input type="radio" name="p10q1" value="correcto"> Una sirenita</label>
+            <label><input type="radio" name="p10q1" value="incorrecto"> Una princesa humana</label>
+            <label><input type="radio" name="p10q1" value="incorrecto"> Una bruja</label>
+          </div>
+          <div class="pregunta"><p>2. ¿Qué desea la sirenita?</p>
+            <label><input type="radio" name="p10q2" value="correcto"> Conocer el mundo humano</label>
+            <label><input type="radio" name="p10q2" value="incorrecto"> Ser reina del mar</label>
+            <label><input type="radio" name="p10q2" value="incorrecto"> Volar</label>
+          </div>
+          <div class="pregunta"><p>3. ¿Qué sacrifica?</p>
+            <label><input type="radio" name="p10q3" value="correcto"> Su voz (en algunas versiones)</label>
+            <label><input type="radio" name="p10q3" value="incorrecto"> Su cola</label>
+            <label><input type="radio" name="p10q3" value="incorrecto"> Su casa</label>
+          </div>
+          <div class="pregunta"><p>4. ¿Qué tema aparece?</p>
+            <label><input type="radio" name="p10q4" value="correcto"> Consecuencias del deseo</label>
+            <label><input type="radio" name="p10q4" value="incorrecto"> La guerra</label>
+            <label><input type="radio" name="p10q4" value="incorrecto"> La ciencia</label>
+          </div>
+          <div class="pregunta"><p>5. ¿Dónde vive?</p>
+            <label><input type="radio" name="p10q5" value="correcto"> En el mar</label>
+            <label><input type="radio" name="p10q5" value="incorrecto"> En la montaña</label>
+            <label><input type="radio" name="p10q5" value="incorrecto"> En el desierto</label>
+          </div>
+          <div class="pregunta"><p>6. ¿Qué encuentra en el mundo humano?</p>
+            <label><input type="radio" name="p10q6" value="correcto"> Nuevas experiencias y desafíos</label>
+            <label><input type="radio" name="p10q6" value="incorrecto"> Un tesoro</label>
+            <label><input type="radio" name="p10q6" value="incorrecto"> Un dragón</label>
+          </div>
+          <div class="pregunta"><p>7. ¿Qué valor aparece?</p>
+            <label><input type="radio" name="p10q7" value="correcto"> Sacrificio y amor</label>
+            <label><input type="radio" name="p10q7" value="incorrecto"> Venganza</label>
+            <label><input type="radio" name="p10q7" value="incorrecto"> Codicia</label>
+          </div>
+          <div class="pregunta"><p>8. ¿Qué lección deja?</p>
+            <label><input type="radio" name="p10q8" value="correcto"> Pensar en las consecuencias antes de actuar</label>
+            <label><input type="radio" name="p10q8" value="incorrecto"> Que todo se consigue sin costo</label>
+            <label><input type="radio" name="p10q8" value="incorrecto"> Que la magia lo soluciona todo</label>
+          </div>
+
+          <div style="text-align:center; margin-top:12px;">
+            <button type="button" class="btn" onclick="calcularPuntaje('formQuiz10','resultado10',8)">Ver puntaje</button>
+            <button type="button" class="btn" onclick="mostrar('menu')">Volver al menú</button>
+          </div>
+        </form>
+        <div id="resultado10" class="resultado"></div>
+      </div>
+    </section>
+
+    <!-- CUENTO 11: El Gato con Botas -->
+    <section id="cuento11" class="pantalla">
+      <div class="card" style="border-left:6px solid #f4cccc;">
+        <div class="card-header">
+          <div class="badge">🐱</div>
+          <div><div class="title">El Gato con Botas</div><div style="color:rgba(241,241,241,0.75); font-size:13px">Ingenio y astucia</div></div>
+        </div>
+        <div class="personaje-wrap"><div class="personaje" id="p_gato">🐱👢🎩</div></div>
+        <div class="cuento">
+          <p>En un pequeño pueblo vivía un joven humilde que heredó de su padre únicamente un gato. Al principio pensó que su suerte era mala, pero pronto descubrió que aquel gato no era común: hablaba, razonaba y tenía un ingenio extraordinario. El gato pidió unas botas y un saco, asegurando que con ellos podría cambiar la vida de su amo.  
+
+Con astucia, el gato comenzó a cazar animales y a presentarlos como regalos al rey, diciendo que provenían de su amo, a quien llamaba “el Marqués de Carabás”. El rey, impresionado por la generosidad y las historias del gato, empezó a considerar al joven como alguien de gran importancia.  
+
+Un día, el gato ideó un plan más audaz. Convenció a su amo de bañarse en el río justo cuando pasaba la carroza real. Fingiendo desesperación, el gato gritó que su amo había sido robado y necesitaba ayuda. El rey, compasivo, ordenó vestirlo con ropas elegantes y lo invitó a viajar con él.  
+
+Mientras tanto, el gato se adelantó al camino y, con ingenio, engañó a campesinos y trabajadores para que dijeran al rey que las tierras pertenecían al Marqués de Carabás. Finalmente, llegó al castillo de un poderoso ogro. Con astucia, lo retó a transformarse en distintos animales y, cuando el ogro se convirtió en ratón, el gato lo devoró, quedándose con el castillo.  
+
+El rey, al ver tanta riqueza y poder, quedó convencido de la nobleza del joven y lo unió a su familia. El amo del gato pasó de la pobreza a una vida llena de fortuna y posición social, todo gracias a la inteligencia y valentía de su fiel compañero.  
+
+La historia demuestra que el ingenio puede cambiar la suerte y que, con astucia y determinación, incluso lo imposible puede hacerse realidad.</p>
+        </div>
+        <div style="text-align:center; margin-top:8px;">
+          <button class="btn" onclick="mostrar('quiz11')">Contestar Quiz</button>
+          <button class="btn" onclick="mostrar('menu')">Volver al menú</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- QUIZ 11 -->
+    <section id="quiz11" class="pantalla">
+      <div class="card">
+        <h2 class="title">Quiz: El Gato con Botas</h2>
+        <form id="formQuiz11">
+          <div class="pregunta"><p>1. ¿Qué usa el gato para impresionar?</p>
+            <label><input type="radio" name="p11q1" value="correcto"> Botas y astucia</label>
+            <label><input type="radio" name="p11q1" value="incorrecto"> Un sombrero mágico</label>
+            <label><input type="radio" name="p11q1" value="incorrecto"> Una espada</label>
+          </div>
+          <div class="pregunta"><p>2. ¿Qué consigue para su amo?</p>
+            <label><input type="radio" name="p11q2" value="correcto"> Fortuna y posición</label>
+            <label><input type="radio" name="p11q2" value="incorrecto"> Un castillo encantado</label>
+            <label><input type="radio" name="p11q2" value="incorrecto"> Un barco</label>
+          </div>
+          <div class="pregunta"><p>3. ¿Qué valor muestra el gato?</p>
+            <label><input type="radio" name="p11q3" value="correcto"> Ingenio</label>
+            <label><input type="radio" name="p11q3" value="incorrecto"> Pereza</label>
+            <label><input type="radio" name="p11q3" value="incorrecto"> Cobardía</label>
+          </div>
+          <div class="pregunta"><p>4. ¿Quién se beneficia?</p>
+            <label><input type="radio" name="p11q4" value="correcto"> El amo del gato</label>
+            <label><input type="radio" name="p11q4" value="incorrecto"> El rey</label>
+            <label><input type="radio" name="p11q4" value="incorrecto"> El mago</label>
+          </div>
+          <div class="pregunta"><p>5. ¿Qué hace el gato para impresionar al rey?</p>
+            <label><input type="radio" name="p11q5" value="correcto"> Lleva regalos y crea historias</label>
+            <label><input type="radio" name="p11q5" value="incorrecto"> Lucha en un torneo</label>
+            <label><input type="radio" name="p11q5" value="incorrecto"> Canta</label>
+          </div>
+          <div class="pregunta"><p>6. ¿Qué demuestra la historia?</p>
+            <label><input type="radio" name="p11q6" value="correcto"> Que el ingenio puede cambiar la suerte</label>
+            <label><input type="radio" name="p11q6" value="incorrecto"> Que la fuerza es todo</label>
+            <label><input type="radio" name="p11q6" value="incorrecto"> Que la magia lo soluciona todo</label>
+          </div>
+          <div class="pregunta"><p>7. ¿Qué accesorio es clave?</p>
+            <label><input type="radio" name="p11q7" value="correcto"> Las botas</label>
+            <label><input type="radio" name="p11q7" value="incorrecto"> El sombrero</label>
+            <label><input type="radio" name="p11q7" value="incorrecto"> La capa</label>
+          </div>
+          <div class="pregunta"><p>8. ¿Qué final suele tener?</p>
+            <label><input type="radio" name="p11q8" value="correcto"> El amo mejora su vida</label>
+            <label><input type="radio" name="p11q8" value="incorrecto"> El gato se va</label>
+            <label><input type="radio" name="p11q8" value="incorrecto"> El rey lo castiga</label>
+          </div>
+
+          <div style="text-align:center; margin-top:12px;">
+            <button type="button" class="btn" onclick="calcularPuntaje('formQuiz11','resultado11',8)">Ver puntaje</button>
+            <button type="button" class="btn" onclick="mostrar('menu')">Volver al menú</button>
+          </div>
+        </form>
+        <div id="resultado11" class="resultado"></div>
+      </div>
+    </section>
+
+    <!-- CUENTO 12: Pulgarcito -->
+    <section id="cuento12" class="pantalla">
+      <div class="card" style="border-left:6px solid #d9ead3;">
+        <div class="card-header">
+          <div class="badge">👣</div>
+          <div><div class="title">Pulgarcito</div><div style="color:rgba(241,241,241,0.75); font-size:13px">Pequeño pero ingenioso</div></div>
+        </div>
+        <div class="personaje-wrap"><div class="personaje" id="p_pulgarcito">👶🌲👣</div></div>
+        <div class="cuento">
+          <p>En una humilde familia nació un niño tan pequeño que cabía en la palma de la mano. Lo llamaron Pulgarcito, pues su tamaño no era mayor al de un dedo pulgar. Aunque frágil en apariencia, desde muy joven demostró una gran astucia y valentía.  
+
+La pobreza llevó a sus padres a tomar decisiones difíciles, y Pulgarcito, consciente de la situación, buscaba siempre la manera de ayudar. Cuando sus hermanos fueron llevados al bosque, él ideó un plan para regresar: dejó migas de pan como señales en el camino. Sin embargo, los pájaros se las comieron y los niños quedaron perdidos. Aun así, Pulgarcito no se rindió y usó su ingenio para encontrar nuevas soluciones.  
+
+En sus aventuras, enfrentó peligros como animales salvajes y la amenaza de un ogro que quería atraparlos. Con inteligencia, logró engañar al ogro y salvar a su familia. Su tamaño pequeño le permitía esconderse y moverse con rapidez, convirtiendo lo que parecía una debilidad en su mayor fortaleza.  
+
+Finalmente, Pulgarcito consiguió regresar con sus padres y, gracias a su astucia, obtuvo riquezas que aseguraron el bienestar de toda la familia. Aunque nunca dejó de ser pequeño, su grandeza se encontraba en su corazón y en su capacidad de pensar con claridad en los momentos más difíciles.  
+
+La historia de Pulgarcito enseña que la inteligencia y el ingenio pueden superar la fuerza bruta, y que incluso el más pequeño puede lograr grandes cosas cuando actúa con valor y determinación.</p>
+        </div>
+        <div style="text-align:center; margin-top:8px;">
+          <button class="btn" onclick="mostrar('quiz12')">Contestar Quiz</button>
+          <button class="btn" onclick="mostrar('menu')">Volver al menú</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- QUIZ 12 -->
+    <section id="quiz12" class="pantalla">
+      <div class="card">
+        <h2 class="title">Quiz: Pulgarcito</h2>
+        <form id="formQuiz12">
+          <div class="pregunta"><p>1. ¿Qué destaca de Pulgarcito?</p>
+            <label><input type="radio" name="p12q1" value="correcto"> Su tamaño pequeño y astucia</label>
+            <label><input type="radio" name="p12q1" value="incorrecto"> Su fuerza</label>
+            <label><input type="radio" name="p12q1" value="incorrecto"> Su riqueza</label>
+          </div>
+          <div class="pregunta"><p>2. ¿Qué usa para orientarse?</p>
+            <label><input type="radio" name="p12q2" value="correcto"> Migas o señales</label>
+            <label><input type="radio" name="p12q2" value="incorrecto"> Un mapa</label>
+            <label><input type="radio" name="p12q2" value="incorrecto"> Un GPS</label>
+          </div>
+          <div class="pregunta"><p>3. ¿Qué valor muestra?</p>
+            <label><input type="radio" name="p12q3" value="correcto"> Ingenio</label>
+            <label><input type="radio" name="p12q3" value="incorrecto"> Pereza</label>
+            <label><input type="radio" name="p12q3" value="incorrecto"> Crueldad</label>
+          </div>
+          <div class="pregunta"><p>4. ¿A quién ayuda?</p>
+            <label><input type="radio" name="p12q4" value="correcto"> A su familia</label>
+            <label><input type="radio" name="p12q4" value="incorrecto"> A un rey</label>
+            <label><input type="radio" name="p12q4" value="incorrecto"> A un dragón</label>
+          </div>
+          <div class="pregunta"><p>5. ¿Dónde ocurre la historia?</p>
+            <label><input type="radio" name="p12q5" value="correcto"> En el campo y el bosque</label>
+            <label><input type="radio" name="p12q5" value="incorrecto"> En la ciudad</label>
+            <label><input type="radio" name="p12q5" value="incorrecto"> En el mar</label>
+          </div>
+          <div class="pregunta"><p>6. ¿Qué peligro enfrenta?</p>
+            <label><input type="radio" name="p12q6" value="correcto"> Pérdida y animales</label>
+            <label><input type="radio" name="p12q6" value="incorrecto"> Inundación</label>
+            <label><input type="radio" name="p12q6" value="incorrecto"> Terremoto</label>
+          </div>
+          <div class="pregunta"><p>7. ¿Qué recurso usa Pulgarcito?</p>
+            <label><input type="radio" name="p12q7" value="correcto"> Su ingenio</label>
+            <label><input type="radio" name="p12q7" value="incorrecto"> Fuerza bruta</label>
+            <label><input type="radio" name="p12q7" value="incorrecto"> Magia</label>
+          </div>
+          <div class="pregunta"><p>8. ¿Qué enseñanza deja?</p>
+            <label><input type="radio" name="p12q8" value="correcto"> Que la inteligencia supera la fuerza</label>
+            <label><input type="radio" name="p12q8" value="incorrecto"> Que la fuerza lo es todo</label>
+            <label><input type="radio" name="p12q8" value="incorrecto"> Que hay que rendirse</label>
+          </div>
+
+          <div style="text-align:center; margin-top:12px;">
+            <button type="button" class="btn" onclick="calcularPuntaje('formQuiz12','resultado12',8)">Ver puntaje</button>
+            <button type="button" class="btn" onclick="mostrar('menu')">Volver al menú</button>
+          </div>
+        </form>
+        <div id="resultado12" class="resultado"></div>
+      </div>
+    </section>
+
+    <!-- CUENTO 13: El Soldadito de Plomo -->
+    <section id="cuento13" class="pantalla">
+      <div class="card" style="border-left:6px solid #d5a6bd;">
+        <div class="card-header">
+          <div class="badge">🪖</div>
+          <div><div class="title">El Soldadito de Plomo</div><div style="color:rgba(241,241,241,0.75); font-size:13px">Valor y lealtad</div></div>
+        </div>
+        <div class="personaje-wrap"><div class="personaje" id="p_soldadito">🪖🧸❤️</div></div>
+        <div class="cuento">
+          <p>En una casa llena de juguetes vivía un pequeño soldadito de plomo. A diferencia de los demás, él tenía solo una pierna, pues al ser fabricado faltó el metal para terminarlo. Sin embargo, se mantenía erguido y firme, mostrando una valentía que lo hacía especial.  
+
+Entre los juguetes, el soldadito admiraba a una delicada bailarina de papel que parecía estar de pie sobre una sola pierna. Aunque nunca podían hablar, él sentía cariño y admiración por ella, y la observaba con respeto desde su lugar.  
+
+Una noche, el soldadito comenzó a vivir aventuras inesperadas. Fue colocado en un barco de papel que navegó por las corrientes de agua en la calle, enfrentó tormentas y terminó en las fauces de un pez. A pesar de los peligros, nunca perdió su firmeza ni su lealtad hacia la bailarina que había dejado atrás.  
+
+El destino lo llevó de regreso a la casa, pero allí sufrió una última prueba: cayó en el fuego de la chimenea. Mientras las llamas lo envolvían, el soldadito se mantuvo recto y valiente. En algunas versiones, la bailarina también fue arrastrada por el viento hacia el fuego, y ambos se unieron en ese instante final.  
+
+Aunque su cuerpo se fundió, lo que quedó fue un pequeño corazón de plomo, símbolo de su fortaleza moral y de la lealtad que lo acompañó hasta el final.  
+
+La historia del soldadito de plomo enseña que la verdadera valentía no depende de la fuerza física, sino de la firmeza del espíritu y la lealtad hacia lo que se ama.</p>
+        </div>
+        <div style="text-align:center; margin-top:8px;">
+          <button class="btn" onclick="mostrar('quiz13')">Contestar Quiz</button>
+          <button class="btn" onclick="mostrar('menu')">Volver al menú</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- QUIZ 13 -->
+    <section id="quiz13" class="pantalla">
+      <div class="card">
+        <h2 class="title">Quiz: El Soldadito de Plomo</h2>
+        <form id="formQuiz13">
+          <div class="pregunta"><p>1. ¿Qué le falta al soldadito?</p>
+            <label><input type="radio" name="p13q1" value="correcto"> Una pierna</label>
+            <label><input type="radio" name="p13q1" value="incorrecto"> Un brazo</label>
+            <label><input type="radio" name="p13q1" value="incorrecto"> La cabeza</label>
+          </div>
+          <div class="pregunta"><p>2. ¿Qué muestra el soldadito?</p>
+            <label><input type="radio" name="p13q2" value="correcto"> Valentía</label>
+            <label><input type="radio" name="p13q2" value="incorrecto"> Cobardía</label>
+            <label><input type="radio" name="p13q2" value="incorrecto"> Egoísmo</label>
+          </div>
+          <div class="pregunta"><p>3. ¿Qué relación tiene con la bailarina?</p>
+            <label><input type="radio" name="p13q3" value="correcto"> Admiración y cariño</label>
+            <label><input type="radio" name="p13q3" value="incorrecto"> Odio</label>
+            <label><input type="radio" name="p13q3" value="incorrecto"> Indiferencia</label>
+          </div>
+          <div class="pregunta"><p>4. ¿Qué valor destaca?</p>
+            <label><input type="radio" name="p13q4" value="correcto"> Lealtad</label>
+            <label><input type="radio" name="p13q4" value="incorrecto"> Traición</label>
+            <label><input type="radio" name="p13q4" value="incorrecto"> Cobardía</label>
+          </div>
+          <div class="pregunta"><p>5. ¿Dónde ocurre parte de la historia?</p>
+            <label><input type="radio" name="p13q5" value="correcto"> En una casa con juguetes</label>
+            <label><input type="radio" name="p13q5" value="incorrecto"> En un castillo</label>
+            <label><input type="radio" name="p13q5" value="incorrecto"> En el mar</label>
+          </div>
+          <div class="pregunta"><p>6. ¿Qué le sucede al final (según versiones)?</p>
+            <label><input type="radio" name="p13q6" value="correcto"> Sufre pero su valentía queda</label>
+            <label><input type="radio" name="p13q6" value="incorrecto"> Se convierte en rey</label>
+            <label><input type="radio" name="p13q6" value="incorrecto"> Se pierde</label>
+          </div>
+          <div class="pregunta"><p>7. ¿Qué simboliza el soldadito?</p>
+            <label><input type="radio" name="p13q7" value="correcto"> Fortaleza moral</label>
+            <label><input type="radio" name="p13q7" value="incorrecto"> Debilidad</label>
+            <label><input type="radio" name="p13q7" value="incorrecto"> Cobardía</label>
+          </div>
+          <div class="pregunta"><p>8. ¿Qué enseñanza deja?</p>
+            <label><input type="radio" name="p13q8" value="correcto"> Que la valentía y la lealtad importan</label>
+            <label><input type="radio" name="p13q8" value="incorrecto"> Que la fuerza física lo es todo</label>
+            <label><input type="radio" name="p13q8" value="incorrecto"> Que hay que rendirse</label>
+          </div>
+
+          <div style="text-align:center; margin-top:12px;">
+            <button type="button" class="btn" onclick="calcularPuntaje('formQuiz13','resultado13',8)">Ver puntaje</button>
+            <button type="button" class="btn" onclick="mostrar('menu')">Volver al menú</button>
+          </div>
+        </form>
+        <div id="resultado13" class="resultado"></div>
+      </div>
+    </section>
+
+    <!-- CUENTO 14: Rapunzel -->
+    <section id="cuento14" class="pantalla">
+      <div class="card" style="border-left:6px solid #ffd1dc;">
+        <div class="card-header">
+          <div class="badge">🪜</div>
+          <div><div class="title">Rapunzel</div><div style="color:rgba(241,241,241,0.75); font-size:13px">Cabello largo y torre</div></div>
+        </div>
+        <div class="personaje-wrap"><div class="personaje" id="p_rapunzel">👩‍🦰🏰🪜</div></div>
+        <div class="cuento">
+          <p>Hace mucho tiempo, una pareja deseaba tener un hijo. Cuando finalmente nació una niña, una mujer que practicaba artes mágicas la reclamó y la encerró en lo alto de una torre sin puertas ni escaleras. La niña creció aislada del mundo, con su único rasgo extraordinario: un cabello tan largo y fuerte que podía caer hasta el suelo.  
+
+La mujer, que la cuidaba con severidad, subía a la torre diciendo: “¡Rapunzel, suelta tu cabello!”, y así escalaba hasta llegar a ella. Rapunzel pasaba sus días cantando y soñando con la libertad, mirando el horizonte desde la ventana.  
+
+Un día, un príncipe que paseaba por el bosque escuchó su canto y quedó cautivado. Observó cómo la mujer subía por el cabello y decidió intentarlo. Llamó a Rapunzel y, con confianza, ella dejó caer su trenza dorada. El príncipe ascendió y ambos se conocieron. Con el tiempo, nació entre ellos un vínculo de amor y esperanza.  
+
+La mujer descubrió la visita y, furiosa, cortó el cabello de Rapunzel y la desterró al desierto. Cuando el príncipe regresó, fue engañado y cayó desde la torre, quedando ciego. A pesar de la adversidad, Rapunzel y el príncipe no perdieron la esperanza. Tras vagar por tierras lejanas, finalmente se reencontraron. Las lágrimas de Rapunzel devolvieron la vista al príncipe, y juntos encontraron la libertad que tanto habían anhelado.  
+
+La historia de Rapunzel simboliza el deseo de libertad y la fuerza del amor frente al encierro. Su cabello, puente entre mundos, representa la conexión y la esperanza que la llevaron a cambiar su destino.</p>
+        </div>
+        <div style="text-align:center; margin-top:8px;">
+          <button class="btn" onclick="mostrar('quiz14')">Contestar Quiz</button>
+          <button class="btn" onclick="mostrar('menu')">Volver al menú</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- QUIZ 14 -->
+    <section id="quiz14" class="pantalla">
+      <div class="card">
+        <h2 class="title">Quiz: Rapunzel</h2>
+        <form id="formQuiz14">
+          <div class="pregunta"><p>1. ¿Dónde vive Rapunzel?</p>
+            <label><input type="radio" name="p14q1" value="correcto"> En una torre</label>
+            <label><input type="radio" name="p14q1" value="incorrecto"> En un castillo</label>
+            <label><input type="radio" name="p14q1" value="incorrecto"> En el bosque</label>
+          </div>
+          <div class="pregunta"><p>2. ¿Qué usa el príncipe para subir?</p>
+            <label><input type="radio" name="p14q2" value="correcto"> El cabello de Rapunzel</label>
+            <label><input type="radio" name="p14q2" value="incorrecto"> Una escalera</label>
+            <label><input type="radio" name="p14q2" value="incorrecto"> Un puente</label>
+          </div>
+          <div class="pregunta"><p>3. ¿Qué simboliza la torre?</p>
+            <label><input type="radio" name="p14q3" value="correcto"> Encierro y protección excesiva</label>
+            <label><input type="radio" name="p14q3" value="incorrecto"> Libertad</label>
+            <label><input type="radio" name="p14q3" value="incorrecto"> Riqueza</label>
+          </div>
+          <div class="pregunta"><p>4. ¿Qué valor aparece?</p>
+            <label><input type="radio" name="p14q4" value="correcto"> Deseo de libertad</label>
+            <label><input type="radio" name="p14q4" value="incorrecto"> Venganza</label>
+            <label><input type="radio" name="p14q4" value="incorrecto"> Codicia</label>
+          </div>
+          <div class="pregunta"><p>5. ¿Quién la encerró?</p>
+            <label><input type="radio" name="p14q5" value="correcto"> Una mujer que la cuidaba (según versiones)</label>
+            <label><input type="radio" name="p14q5" value="incorrecto"> Un dragón</label>
+            <label><input type="radio" name="p14q5" value="incorrecto"> Un rey</label>
+          </div>
+          <div class="pregunta"><p>6. ¿Qué hace Rapunzel con su cabello?</p>
+            <label><input type="radio" name="p14q6" value="correcto"> Lo usa para subir y bajar</label>
+            <label><input type="radio" name="p14q6" value="incorrecto"> Lo corta siempre</label>
+            <label><input type="radio" name="p14q6" value="incorrecto"> Lo vende</label>
+          </div>
+          <div class="pregunta"><p>7. ¿Cómo termina la historia (según versiones)?</p>
+            <label><input type="radio" name="p14q7" value="correcto"> Rapunzel encuentra libertad y amor</label>
+            <label><input type="radio" name="p14q7" value="incorrecto"> Rapunzel se queda en la torre</label>
+            <label><input type="radio" name="p14q7" value="incorrecto"> Rapunzel se convierte en bruja</label>
+          </div>
+          <div class="pregunta"><p>8. ¿Qué enseñanza deja?</p>
+            <label><input type="radio" name="p14q8" value="correcto"> Que la libertad es valiosa</label>
+            <label><input type="radio" name="p14q8" value="incorrecto"> Que el encierro es mejor</label>
+            <label><input type="radio" name="p14q8" value="incorrecto"> Que la soledad es deseable</label>
+          </div>
+
+          <div style="text-align:center; margin-top:12px;">
+            <button type="button" class="btn" onclick="calcularPuntaje('formQuiz14','resultado14',8)">Ver puntaje</button>
+            <button type="button" class="btn" onclick="mostrar('menu')">Volver al menú</button>
+          </div>
+        </form>
+        <div id="resultado14" class="resultado"></div>
+      </div>
+    </section>
+
+    <!-- CUENTO 15: El Flautista de Hamelín -->
+    <section id="cuento15" class="pantalla">
+      <div class="card" style="border-left:6px solid #b6d7a8;">
+        <div class="card-header">
+          <div class="badge">🎶</div>
+          <div><div class="title">El Flautista de Hamelín</div><div style="color:rgba(241,241,241,0.75); font-size:13px">Música, promesas y consecuencias</div></div>
+        </div>
+        <div class="personaje-wrap"><div class="personaje" id="p_flautista">🎶🐭🏘️</div></div>
+        <div class="cuento">
+          <p>Hace muchos años, la ciudad de Hamelín enfrentaba un grave problema: estaba invadida por una plaga de ratas que se colaban en las casas, devoraban la comida y causaban miedo entre los habitantes. Nadie sabía cómo librarse de ellas, hasta que un misterioso hombre apareció en la ciudad. Vestía ropas llamativas y llevaba consigo una flauta. Se presentó como músico y aseguró que podía resolver el problema a cambio de una recompensa justa.  
+
+Los gobernantes, desesperados, aceptaron el trato. Entonces, el flautista comenzó a tocar una melodía mágica que recorrió las calles. Las ratas, hipnotizadas por la música, lo siguieron hasta el río, donde todas desaparecieron. La ciudad celebró con alegría, pero cuando el flautista pidió su pago, los líderes se negaron a cumplir la promesa, creyendo que ya no lo necesitaban.  
+
+Ofendido por la deshonestidad, el flautista volvió a tocar su flauta, esta vez con una melodía diferente. Los niños de Hamelín, encantados por la música, lo siguieron fuera de la ciudad. Nadie pudo detenerlos y desaparecieron junto con él. La ciudad quedó en silencio, marcada por la tristeza y la culpa de no haber cumplido su palabra.  
+
+La historia del Flautista de Hamelín enseña que las promesas deben cumplirse y que la responsabilidad es esencial para evitar consecuencias dolorosas. Su flauta simboliza el poder de la música, pero también la importancia de la honestidad y el respeto a los acuerdos.</p>
+        </div>
+        <div style="text-align:center; margin-top:8px;">
+          <button class="btn" onclick="mostrar('quiz15')">Contestar Quiz</button>
+          <button class="btn" onclick="mostrar('menu')">Volver al menú</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- QUIZ 15 -->
+    <section id="quiz15" class="pantalla">
+      <div class="card">
+        <h2 class="title">Quiz: El Flautista de Hamelín</h2>
+        <form id="formQuiz15">
+          <div class="pregunta"><p>1. ¿Qué problema tenía la ciudad?</p>
+            <label><input type="radio" name="p15q1" value="correcto"> Una plaga de ratas</label>
+            <label><input type="radio" name="p15q1" value="incorrecto"> Inundación</label>
+            <label><input type="radio" name="p15q1" value="incorrecto"> Sequía</label>
+          </div>
+          <div class="pregunta"><p>2. ¿Quién solucionó el problema?</p>
+            <label><input type="radio" name="p15q2" value="correcto"> Un flautista</label>
+            <label><input type="radio" name="p15q2" value="incorrecto"> Un mago</label>
+            <label><input type="radio" name="p15q2" value="incorrecto"> Un rey</label>
+          </div>
+          <div class="pregunta"><p>3. ¿Qué pidió el flautista a cambio?</p>
+            <label><input type="radio" name="p15q3" value="correcto"> Una recompensa</label>
+            <label><input type="radio" name="p15q3" value="incorrecto"> Un castillo</label>
+            <label><input type="radio" name="p15q3" value="incorrecto"> Un barco</label>
+          </div>
+          <div class="pregunta"><p>4. ¿Qué pasó cuando no le pagaron?</p>
+            <label><input type="radio" name="p15q4" value="correcto"> Se llevó a los niños con su flauta</label>
+            <label><input type="radio" name="p15q4" value="incorrecto"> Se fue</label>
+            <label><input type="radio" name="p15q4" value="incorrecto"> Se convirtió en rey</label>
+          </div>
+          <div class="pregunta"><p>5. ¿Qué simboliza la historia?</p>
+            <label><input type="radio" name="p15q5" value="correcto"> La importancia de cumplir promesas</label>
+            <label><input type="radio" name="p15q5" value="incorrecto"> Que la música cura todo</label>
+            <label><input type="radio" name="p15q5" value="incorrecto"> Que las ratas son buenas</label>
+          </div>
+          <div class="pregunta"><p>6. ¿Qué instrumento usa el flautista?</p>
+            <label><input type="radio" name="p15q6" value="correcto"> Una flauta</label>
+            <label><input type="radio" name="p15q6" value="incorrecto"> Un tambor</label>
+            <label><input type="radio" name="p15q6" value="incorrecto"> Un violín</label>
+          </div>
+          <div class="pregunta"><p>7. ¿Qué valor aparece?</p>
+            <label><input type="radio" name="p15q7" value="correcto"> Responsabilidad y cumplimiento</label>
+            <label><input type="radio" name="p15q7" value="incorrecto"> Deshonestidad</label>
+            <label><input type="radio" name="p15q7" value="incorrecto"> Indiferencia</label>
+          </div>
+          <div class="pregunta"><p>8. ¿Qué lección deja?</p>
+            <label><input type="radio" name="p15q8" value="correcto"> Cumplir acuerdos evita consecuencias</label>
+            <label><input type="radio" name="p15q8" value="incorrecto"> Que la música lo soluciona todo</label>
+            <label><input type="radio" name="p15q8" value="incorrecto"> Que las ratas mandan</label>
+          </div>
+
+          <div style="text-align:center; margin-top:12px;">
+            <button type="button" class="btn" onclick="calcularPuntaje('formQuiz15','resultado15',8)">Ver puntaje</button>
+            <button type="button" class="btn" onclick="mostrar('menu')">Volver al menú</button>
+          </div>
+        </form>
+        <div id="resultado15" class="resultado"></div>
+      </div>
+    </section>
+
+    <footer>Hecho con ❤️ — Biblioteca Digital Escolar</footer>
+  </main>
+
+  <script>
+    let animacionesActivadas = true;
+
+    function mostrar(id) {
+      document.querySelectorAll('.pantalla').forEach(div => div.classList.remove('activo'));
+      const el = document.getElementById(id);
+      if (!el) return;
+      el.classList.add('activo');
+
+      const cab = document.getElementById('cabecera');
+      cab.style.display = (id === 'menu') ? 'block' : 'none';
+
+      activarAnimacionPersonajes(el);
+      window.scrollTo({top:0, behavior:'smooth'});
+    }
+
+    function activarAnimacionPersonajes(seccion) {
+      if (!animacionesActivadas) return;
+      // quitar visible en todos
+      document.querySelectorAll('.personaje').forEach(p => p.classList.remove('visible'));
+      const personajes = seccion.querySelectorAll('.personaje');
+      personajes.forEach((p, i) => setTimeout(()=>p.classList.add('visible'), 120 + i*120));
+    }
+
+    function toggleAnimaciones() {
+      animacionesActivadas = !animacionesActivadas;
+      if (!animacionesActivadas) {
+        document.querySelectorAll('.personaje').forEach(p => p.classList.remove('visible'));
+        alert('Animaciones desactivadas');
+      } else {
+        alert('Animaciones activadas');
+      }
+    }
+
+    /* Puntaje y retroalimentación */
+    function calcularPuntaje(formId, resultadoId, total) {
+      const form = document.getElementById(formId);
+      if (!form) return;
+      let puntaje = 0;
+      let retroHTML = "";
+      const preguntas = form.querySelectorAll('.pregunta');
+
+      preguntas.forEach((pregunta, idx) => {
+        const seleccionada = pregunta.querySelector('input[type=radio]:checked');
+        const correctaInput = pregunta.querySelector('input[value="correcto"]');
+        const numero = idx + 1;
+        if (seleccionada && seleccionada.value === "correcto") {
+          puntaje++;
+        } else {
+          let textoCorrecto = "Respuesta correcta no encontrada";
+          if (correctaInput && correctaInput.parentElement) {
+            textoCorrecto = correctaInput.parentElement.textContent.trim();
+          }
+          retroHTML += '<div class="retro-correctas">❌ Pregunta ' + numero + ': La respuesta correcta era → <strong>' + escapeHtml(textoCorrecto) + '</strong></div>';
+        }
+      });
+
+      const porcentaje = Math.round((puntaje / total) * 100);
+      let mensaje = "";
+      if (puntaje === total) {
+        mensaje = "¡Excelente trabajo! Has respondido todo correctamente.";
+      } else if (porcentaje >= 75) {
+        mensaje = "Muy bien, sigue practicando para mejorar aún más.";
+      } else if (porcentaje >= 40) {
+        mensaje = "Buen intento, repasa el cuento y vuelve a intentarlo.";
+      } else {
+        mensaje = "No te preocupes, inténtalo de nuevo y revisa el texto con calma.";
+      }
+
+      const resultadoEl = document.getElementById(resultadoId);
+      if (resultadoEl) {
+        resultadoEl.innerHTML = '<div><strong>Tu puntaje final es: ' + puntaje + ' de ' + total + ' (' + porcentaje + '%)</strong></div>'
+                              + '<div style="margin-top:8px;">' + escapeHtml(mensaje) + '</div>'
+                              + '<div style="margin-top:10px;">' + retroHTML + '</div>';
+      }
+    }
+
+    function escapeHtml(str) {
+      if (!str) return '';
+      return String(str).replace(/&/g, "&amp;")
+                        .replace(/</g, "&lt;")
+                        .replace(/>/g, "&gt;")
+                        .replace(/"/g, "&quot;")
+                        .replace(/'/g, "&#039;");
+    }
+
+    window.addEventListener('load', () => {
+      document.getElementById('cabecera').style.display = 'block';
+    });
+  </script>
+</body>
+</html>
